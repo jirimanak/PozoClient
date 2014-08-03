@@ -111,9 +111,13 @@ def cre_double_strip(value):
 def cre_timedate_strip(value):
     return "{0}:{1}:".format(PozoCodes.pozocode.get('TIMEDATE'),value)
 
-
+def cre_byte_strip(value):
+    return "{0}:{1}:".format(PozoCodes.pozocode.get('BYTE'),int(value,2))
+    
 def cre_cmd_strip(cmd_name, value_name):
     return "{0}:{1}:".format(PozoCodes.pozocode.get(cmd_name),PozoCodes.pozocode.get(value_name))
+
+
 
 def get_pozo_command(cmd,value_type,value):
     return "C{:0=4d}".format(PozoCodes.pozocode.get(cmd))
@@ -285,6 +289,28 @@ def pozo_full_read1wtemp(sensor):
     print pc.value1        
 
 
+def pozo_full_read1waddr(sensor):
+    msg = cre_cmd_strip('SENDER','JARDIN')
+    msg = msg + cre_cmd_strip('COMMAND','READ1WADDR')
+    msg = msg + cre_long_strip(sensor)
+    print msg
+    answ = send_msg(msg)
+    answ = retrieve_reply_body( answ )
+    pc = parse_answer(answ)   
+    print pc.value1        
+
+
+def pozo_full_setbinary(value):
+    msg = cre_cmd_strip('SENDER','JARDIN')
+    msg = msg + cre_cmd_strip('COMMAND','SETBINARY')
+    msg = msg + cre_byte_strip(value)
+    print msg
+    answ = send_msg(msg)
+    answ = retrieve_reply_body( answ )
+    pc = parse_answer(answ)   
+    print pc.value1        
+
+
 def pozo_help():
     pass
 
@@ -326,7 +352,14 @@ def execute_command(arg):
                 pozo_full_setlow(arg[x])
                 time.sleep(1)
         else:
+            print ("too few parameters")
+            
+    elif ("setbinary" in arg[0]):
+        if (len(arg)>1):
+                pozo_full_setbinary(arg[1])
+        else:
             print ("too few parameters")    
+                
     elif ("get1wnum" in arg[0]):
         pozo_full_get1wnum()
             
@@ -339,6 +372,15 @@ def execute_command(arg):
         else: 
             ''' default is sensor number 1 '''
             pozo_full_read1wtemp(1)
+
+    elif ("read1waddr" in arg[0]):
+        if (len(arg)>1):
+            pozo_full_read1waddr(arg[1])
+        else: 
+            ''' default is sensor number 1 '''
+            pozo_full_read1waddr(1)
+
+
 
     elif ("help" in arg[0]):
             pass

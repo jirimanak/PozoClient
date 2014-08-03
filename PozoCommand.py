@@ -33,6 +33,9 @@ class PozoCommand(object):
     def cre_long_strip(self, value):
         return "{0}[{1}]".format(PozoCodes.pozocode.get('LONG'),value)
 
+    def cre_byte_strip(self, value):
+        return "{0}[{1}]".format(PozoCodes.pozocode.get('BYTE'),value)
+
     def cre_double_strip(self, value):
         return "{0}[{1}]".format(PozoCodes.pozocode.get('DOUBLE'),value)
 
@@ -68,6 +71,10 @@ class PozoCommand(object):
             self.store_value(float(value))
         elif (code == PozoCodes.pozocode.get('TIME')):
             self.timedate = int(value) 
+        elif (code == PozoCodes.pozocode.get('BYTE')):
+            self.store_value(value)
+        elif (code == PozoCodes.pozocode.get('STRVALUE')):
+            self.store_value(value)
                                    
 
     # create_message

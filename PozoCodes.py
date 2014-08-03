@@ -22,28 +22,32 @@ pozocode = {
   'DOUBLE': 'D',
   'FLOAT': 'F',
   'TIMEDATE': 'T',
-  'NOTYPE':'0',
+  'NOTYPE':'N',
   'ERRORCODE':'E',
   'SENDER':'S',
   'COMMAND':'C',
+  'BYTE':'B',
+  'STRVALUE':'R',
+  
   
 # 100 - 199 commands
 
   'NOPE':100,      # no command - do nothing
   'SET_TIME':101,  # set time from seconds after epoch
   'PING':103,      # get response if alive
-  'PONG':104,      # inform POZO ping response recieved succesfully
+  'PONG':104,      # inform POZO ping response received successfully
   'FREERAM':105,    # get free ram of POZO
   'GETTIME':106,    # get system time of POZO
   
   'SETHIGH':107,    # set pin number N high
   'SETLOW':108,     # set pin number N low
   'GETPIN':109,     # get status of pin
+  'SETBINARY':110,     # set all pins according BYTE  0 = low 1 = high
 
-  'GET1WNUM':110,   # get number of devices
-  'READ1WNUM':111,  # read value from 1 wire device number ...
-  'READ1WADDR':112, # read address of 1 wire device
-  'READ1WTEMP':113, # read temperature of 1 wire device  
+  'GET1WNUM':120,   # get number of devices
+  'READ1WNUM':121,  # read value from 1 wire device number ...
+  'READ1WADDR':122, # read address of 1 wire device
+  'READ1WTEMP':123, # read temperature of 1 wire device  
   
   
 # 200 - 299 response codes
