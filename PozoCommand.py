@@ -44,15 +44,14 @@ class PozoCommand(object):
 
 
     def cre_cmd_strip(self, cmd_name, value_name):
-        return "{0}[{1}]".format(PozoCodes.pozocode.get(cmd_name),PozoCodes.pozocode.get(value_name))
+        return "{0}[{1}]".format(PozoCodes.pozocode.get(cmd_name), PozoCodes.pozocode.get(value_name))
 
     def store_value(self,value):
         if (self.numofvalues == 0):
-            self.value1 = value
-            ++self.numofvalues
+            self.value1 = value          
         if (self.numofvalues == 1):
             self.value2 = value
-            ++self.numofvalues    
+        self.numofvalues = self.numofvalues + 1
 
     def store_code_value(self, code, value):
         if (code == PozoCodes.pozocode.get('SENDER')):
@@ -64,7 +63,7 @@ class PozoCommand(object):
         elif (code == PozoCodes.pozocode.get('INTEGER')):
             self.store_value(int(value))        
         elif (code == PozoCodes.pozocode.get('LONG')):
-            self.store_value(value)        
+            self.store_value(int(value))        
         elif (code == PozoCodes.pozocode.get('FLOAT')):
             self.store_value(float(value))        
         elif (code == PozoCodes.pozocode.get('DOUBLE')):

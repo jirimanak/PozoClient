@@ -151,6 +151,11 @@ def pozo_gettime():
     msg = msg + cre_cmd_strip('COMMAND','GETTIME')
     return msg
 
+def pozo_pinstatus():
+    msg = cre_cmd_strip('SENDER','JARDIN')
+    msg = msg + cre_cmd_strip('COMMAND','PINSTATUS')
+    return msg
+
    
 def send_msg( msg ):
     s = open_connection()        
@@ -211,10 +216,11 @@ def parse_answer(answr):
         else:
             value = x
             iscode = False
+            pc.store_code_value(code, value)
+
             if VERBOSE > 0: 
                 print "CODE:{0}:VALUE:{1}".format(code, value)
-            pc.store_code_value(code, value)
-    
+
     return pc
 
    
@@ -246,7 +252,18 @@ def pozo_full_gettime():
         print answ
     pc = parse_answer(str(answ)) 
     print time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.localtime(float(pc.value1)))
-  
+
+
+def pozo_full_pinstatus():
+    cmd = pozo_pinstatus()
+    if VERBOSE > 0: 
+        print cmd
+    answ = send_msg(cmd)
+    answ = retrieve_reply_body( answ )
+    if VERBOSE > 0: 
+        print answ
+    pc = parse_answer(str(answ)) 
+    print "{0:07b}  {1}s".format(pc.value1, pc.value2)
   
 def pozo_full_sethigh(pinnum):
     msg = cre_cmd_strip('SENDER','JARDIN')
@@ -300,10 +317,11 @@ def pozo_full_read1waddr(sensor):
     print pc.value1        
 
 
-def pozo_full_setbinary(value):
+def pozo_full_setbinary(value, period = 60):
     msg = cre_cmd_strip('SENDER','JARDIN')
     msg = msg + cre_cmd_strip('COMMAND','SETBINARY')
     msg = msg + cre_byte_strip(value)
+    msg = msg + cre_long_strip(period)
     print msg
     answ = send_msg(msg)
     answ = retrieve_reply_body( answ )
@@ -355,10 +373,12 @@ def execute_command(arg):
             print ("too few parameters")
             
     elif ("setbinary" in arg[0]):
-        if (len(arg)>1):
-                pozo_full_setbinary(arg[1])
-        else:
+        if (len(arg)<=1):
             print ("too few parameters")    
+        elif(len(arg)==2):    
+            pozo_full_setbinary(arg[1])
+        else:
+            pozo_full_setbinary(arg[1], arg[2])
                 
     elif ("get1wnum" in arg[0]):
         pozo_full_get1wnum()
@@ -379,7 +399,12 @@ def execute_command(arg):
         else: 
             ''' default is sensor number 1 '''
             pozo_full_read1waddr(1)
+   
+    elif ("pinstatus" in arg[0]):
+        pozo_full_pinstatus()
 
+    elif ("verbose" in arg[0]):
+        VERBOSE = arg[1]
 
 
     elif ("help" in arg[0]):

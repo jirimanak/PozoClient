@@ -42,7 +42,8 @@ pozocode = {
   'SETHIGH':107,    # set pin number N high
   'SETLOW':108,     # set pin number N low
   'GETPIN':109,     # get status of pin
-  'SETBINARY':110,     # set all pins according BYTE  0 = low 1 = high
+  'SETBINARY':110,  # set all pins according BYTE  0 = low 1 = high
+  'PINSTATUS':111,  # get pin status and remaining time, zero remaining time mean infinite 
 
   'GET1WNUM':120,   # get number of devices
   'READ1WNUM':121,  # read value from 1 wire device number ...
